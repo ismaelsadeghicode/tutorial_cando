@@ -5,46 +5,59 @@ import ir.uni.service.Action;
 import ir.uni.service.UserAction;
 import ir.uni.service.UserActionImpl;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class App {
 
     public static Set<User> users = new HashSet<>();
+    public static int generateId = 0;
 
     public static void main(String[] args) {
 
 
         Scanner scanner = new Scanner(System.in);
 
+        Map<Integer, String> actions = new LinkedHashMap<>();
+        actions.put(1 , "create");
+        actions.put(2 , "update");
+        actions.put(3 , "delete");
+        actions.put(4 , "read");
+        actions.put(5 , "exit");
+
+        Map<Integer, String> actionApp = new LinkedHashMap<>();
+        actionApp.put(1, "admin");
+        actionApp.put(2, "client");
+        actionApp.put(3, "guest");
+        actionApp.put(4, "exit");
+
+        Map<Integer, User> userMap = new HashMap<>();
+
+
         while (true) {
             System.out.println("####### UNI #########");
-            System.out.println();
-            System.out.println("# 1- create");
-            System.out.println("# 2- update");
-            System.out.println("# 3- delete");
-            System.out.println("# 4- read");
-            System.out.println("# 5- exit");
+            for (Map.Entry action: actions.entrySet()) {
+                System.out.println(action.getKey() + "-" + action.getValue());
+            }
             System.out.print("Enter action: ");
+
             int input = scanner.nextInt();
 
             int status = 0;
             UserAction userAction = new UserActionImpl();
             String username;
             String password;
-            switch (input) {
-                case 1:
-                    System.out.println("##################");
-                    System.out.println("1- admin");
-                    System.out.println("2- client");
-                    System.out.println("3- guest");
-                    System.out.println("4- exit");
 
+            System.out.println("##################");
+            switch (input) {
+
+                case 1:
+                    for (Map.Entry action: actionApp.entrySet()) {
+                        System.out.println(action.getKey() + "-" + action.getValue());
+                    }
                     int inp = scanner.nextInt();
+                    System.out.println("##################");
                     switch (inp) {
                         case 1:
-                            System.out.println("##################");
                             System.out.print("Enter Your Username: ");
                             username = scanner.next();
                             System.out.println();
@@ -55,6 +68,8 @@ public class App {
                             user.setUsername(username);
                             user.setPassword(password);
                             userAction.create(user);
+                            user.setId(++generateId);
+                            userMap.put(user.getId() , user);
                             break;
                         case 2:
 
@@ -100,7 +115,10 @@ public class App {
                     System.out.println("List Users After: " + userAction.read());
                     break;
                 case 4:
-                    System.out.println("List Usewrs: " + userAction.read());
+                    System.out.println("List Users: " + userAction.read());
+                    for (User userData : userMap.values()) {
+                        System.out.println(userData.getId() + "- " + userData.getUsername());
+                    }
                     break;
             }
 

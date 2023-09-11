@@ -2,14 +2,14 @@ package ir.uni.service;
 
 import java.util.Set;
 
-public interface Action<U> {
+public interface Action<A> {
 
-    void create(U u);
+    void create(A a);
 
-    void delete(U u);
+    void delete(A a);
 
-    void update(U u);
+    void update(A a);
 
-    Set<U> read();
+    Set<A> read();
 
 }
